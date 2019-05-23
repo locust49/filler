@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/19 04:15:31 by slyazid           #+#    #+#             */
-/*   Updated: 2019/05/23 06:44:25 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/05/23 18:12:24 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,13 @@ typedef struct	s_point
 	int	row;
 	int	col;
 }				t_point;
+
+typedef struct	s_token
+{
+	char	**map;
+	t_point	size;
+	char	id;
+}				t_token;
+
 #endif
 
