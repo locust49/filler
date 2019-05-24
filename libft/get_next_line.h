@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_striteri.c                                      :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/21 09:00:22 by slyazid           #+#    #+#             */
-/*   Updated: 2018/10/24 23:49:42 by slyazid          ###   ########.fr       */
+/*   Created: 2018/11/14 19:31:53 by slyazid           #+#    #+#             */
+/*   Updated: 2018/12/04 15:16:32 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
+# include "libft.h"
+# include <sys/types.h>
+# include <sys/uio.h>
+# define BUFF_SIZE 1337
 
-void	ft_striteri(char *s, void (*f)(unsigned int, char *))
+typedef struct		s_files
 {
-	unsigned int i;
+	int				fd;
+	char			*cont;
+	struct s_files	*next;
+}					t_files;
 
-	i = 0;
-	if (s && f)
-	{
-		while (s[i] != '\0')
-		{
-			(*f)(i, s + i);
-			i++;
-		}
-	}
-}
+int					get_next_line(const int fd, char **line);
+#endif
