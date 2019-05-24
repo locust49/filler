@@ -6,13 +6,13 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/19 04:15:31 by slyazid           #+#    #+#             */
-/*   Updated: 2019/05/23 19:25:08 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/05/23 20:32:02 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILLER_H
 # define FILLER_H
-# include "libft.h"
+# include "libft/libft.h"
 
 typedef struct	s_players
 {
