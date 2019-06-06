@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 19:11:01 by slyazid           #+#    #+#             */
-/*   Updated: 2019/05/23 19:22:53 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/06 23:51:38 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_heat_one(int **heat, t_token *board)
 				tmp_heat[row][col] = -1;
 			}
 			else if (board->map[row][col] == 'X' || board->map[row][col] == 'x')
-				heat[row][col] = -2;
+				tmp_heat[row][col] = -2;
 		}
 	}
 }
@@ -64,7 +64,7 @@ void	ft_heat_over(int **heat, t_point size)
 
 	value = 0;
 	mem = size.col;
-	while (mem--)
+	while (mem-- >= 0)
 	{
 		coord.row = -1;
 		while (++(coord.row) < size.row)

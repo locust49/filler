@@ -3,94 +3,127 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mzahir <medayoub.zahir@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/14 19:11:59 by slyazid           #+#    #+#             */
-/*   Updated: 2018/11/14 23:56:44 by slyazid          ###   ########.fr       */
+/*   Created: 2018/11/04 14:33:44 by mzahir            #+#    #+#             */
+/*   Updated: 2019/06/04 08:06:41 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-static t_files		*ft_create_lst(int fd)
+static	t_buff	*ft_create_buff(int fd, t_buff *previous)
 {
-	t_files *new;
+	t_buff	*buff;
 
-	new = (t_files*)malloc(sizeof(t_files));
-	if (!new)
-		return (NULL);
-	new->fd = fd;
-	new->cont = ft_strnew(BUFF_SIZE);
-	new->next = NULL;
-	return (new);
-}
-
-t_files				*ft_find_file(int fd, t_files *myfiles)
-{
-	t_files *pre;
-	t_files *current;
-
-	current = myfiles;
-	while (current != NULL)
+	if (!(buff = (t_buff*)malloc(sizeof(t_buff))))
+		return (0);
+	buff->previous = 0;
+	buff->next = 0;
+	if (previous)
 	{
-		if (current->fd == fd)
-			return (current);
-		pre = current;
-		current = current->next;
+		buff->previous = previous;
+		if (previous->next)
+		{
+			buff->next = previous->next;
+			previous->next->previous = buff;
+		}
+		else
+			buff->next = 0;
+		previous->next = buff;
 	}
-	pre->next = ft_create_lst(fd);
-	free(current);
-	return (pre->next);
+	buff->data = "";
+	buff->fd = fd;
+	return (buff);
 }
 
-int					reading(t_files **f, char **buffer)
+static	t_buff	*ft_find_fd(int fd, t_buff *buff)
 {
-	int val;
-
-	while ((val = read((*f)->fd, *buffer, BUFF_SIZE) > 0))
+	if (buff->previous)
+		while (buff->previous)
+			buff = buff->previous;
+	while (buff)
 	{
-		(*f)->cont = ft_strjoin((*f)->cont, *buffer);
-		ft_bzero(*buffer, BUFF_SIZE);
-		if (ft_strchr((*f)->cont, '\n'))
+		if (buff->fd == fd)
+			return (buff);
+		buff = buff->next;
+	}
+	return (0);
+}
+
+static	t_buff	*ft_prepare_buff(int fd, t_buff *buff)
+{
+	t_buff	*temp;
+
+	if (!buff)
+	{
+		if (!(buff = ft_create_buff(fd, 0)))
+			return (0);
+	}
+	else
+	{
+		if ((temp = ft_find_fd(fd, buff)))
+			buff = temp;
+		else if (!(buff = ft_create_buff(fd, buff)))
+			return (0);
+	}
+	return (buff);
+}
+
+static int		ft_read_line(int fd, t_buff **buff, char **read_ln, char **br)
+{
+	int	val;
+	int	size;
+
+	val = 1;
+	if ((*br = ft_strchr((*buff)->data, '\n')))
+		if (!(*read_ln = ft_strsub((*buff)->data, 0, *br - (*buff)->data)))
+			return (-1);
+	if (*((*buff)->data) && !*br)
+		if (!(*read_ln = ft_strdup((*buff)->data)))
+			return (-1);
+	while (!*br)
+	{
+		if (!((*buff)->data = ft_strnew(BUFF_SIZE)))
+			return (-1);
+		if ((val = read(fd, (*buff)->data, BUFF_SIZE)) <= 0)
 			break ;
+		if (!(*br = ft_strchr((*buff)->data, '\n')))
+			*read_ln = ft_strjoin(*read_ln, (*buff)->data);
+		else
+		{
+			size = *br - (*buff)->data;
+			*read_ln = ft_strjoin(*read_ln, ft_strsub((*buff)->data, 0, size));
+		}
 	}
 	return (val);
 }
 
-int					check(t_files **f, char **line, int val)
+int				get_next_line(const int fd, char **line)
 {
-	if ((*f)->fd < 0 || !line || val < 0)
-		return (0);
-	if (!(*f)->cont)
-		(*f)->cont = ft_strnew(BUFF_SIZE);
-	return (1);
-}
-
-int					get_next_line(const int fd, char **line)
-{
+	static t_buff	*buff;
+	char			*read_ln;
+	char			*br;
 	int				val;
-	char			*buffer;
-	char			*n_line;
-	t_files			*f;
-	static t_files	*myfiles;
 
-	buffer = ft_strnew(BUFF_SIZE);
-	if (!myfiles)
-		myfiles = ft_create_lst(fd);
-	f = ft_find_file(fd, myfiles);
-	if (!check(&f, line, read(f->fd, buffer, 0)))
+	if (fd < 0 || !line)
 		return (-1);
-	val = reading(&f, &buffer);
-	if (!(n_line = ft_strchr(f->cont, '\n')))
+	if (!(buff = ft_prepare_buff(fd, buff)))
+		return (-1);
+	if (!*(buff->data))
 	{
-		*line = ft_strdup(f->cont);
-		if (val == 0 && !*f->cont)
-			return (0);
-		ft_bzero(f->cont, ft_strlen(f->cont));
-		return (1);
+		if (!(buff->data = ft_strnew(BUFF_SIZE)))
+			return (-1);
+		if ((val = read(fd, buff->data, BUFF_SIZE)) <= 0)
+			return (val);
 	}
-	*line = ft_strsub(f->cont, 0, ft_strlen(f->cont) - ft_strlen(n_line));
-	f->cont = n_line + 1;
+	if ((val = ft_read_line(fd, &buff, &read_ln, &br)) == -1)
+		return (val);
+	if (!(*line = read_ln))
+		return (-1);
+	if (buff->data && br)
+		buff->data = br + 1;
+	if (!*line && val <= 0)
+		return (val);
 	return (1);
 }

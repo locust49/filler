@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 19:31:53 by slyazid           #+#    #+#             */
-/*   Updated: 2018/12/04 15:16:32 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/04 08:02:04 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 # include <sys/uio.h>
 # define BUFF_SIZE 1337
 
-typedef struct		s_files
+typedef	struct	s_buff
 {
 	int				fd;
-	char			*cont;
-	struct s_files	*next;
-}					t_files;
+	char			*data;
+	struct s_buff	*previous;
+	struct s_buff	*next;
+}				t_buff;
 
-int					get_next_line(const int fd, char **line);
+int				get_next_line(const int fd, char **line);
 #endif

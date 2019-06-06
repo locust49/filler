@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/19 04:15:31 by slyazid           #+#    #+#             */
-/*   Updated: 2019/05/23 20:32:02 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/01 20:21:34 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,7 @@ void	ft_heat_one(int **heat, t_token *board);
 void	ft_heat_over(int **heat, t_point size);
 
 void	ft_print_matrix(int **tab, t_point size);
+void	ft_print_token(t_token token);
+void	ft_print_point(t_point point, int fd);
 #endif
 
