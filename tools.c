@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 19:13:23 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/04 08:38:09 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/10 04:56:40 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,23 @@ void	ft_print_matrix(int **tab, t_point size)
 {
 	int	row;
 	int	col;
+	int scol;
+	int i;
 
+	i = 0;
+	scol = size.col;
+	dprintf(2, "%3c ", ' ');
+	while (scol-- > 0)
+		dprintf(2, "%3d ", i++);
+	dprintf(2,"\n");
 	row = -1;
 	while (++row < size.row)
 	{
 		col = -1;
+		dprintf(2, "%03d ", row);
 		while (++col < size.col)
 		{
-			dprintf(2, "%2d ", tab[row][col]);
+			dprintf(2, "%3d ", tab[row][col]);
 /*			ft_putnbr_fd(tab[row][col], 2);
 			ft_putchar_fd(' ' ,2);
 			ft_putchar_fd(' ' ,2);

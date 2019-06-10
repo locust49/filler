@@ -6,7 +6,7 @@ NAME	=	./resources/players/slyazid.filler
 LIBR	=	libft
 LBIN	=	libft/libft.a
 
-SRCS	=	heat_map.c initialize_params.c tools.c main.c
+SRCS	=	heat_map.c initialize_params.c tools.c token.c main.c
 HDRS	=	filler.h
 
 all: $(NAME)
