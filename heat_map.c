@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 19:11:01 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/06 23:51:38 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/10 07:48:41 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ void	ft_heat_one(int **heat, t_token *board)
 		{
 			if (board->map[row][col] == 'O' || board->map[row][col] == 'o')
 			{
-				row > 0 && col > 0 && tmp_heat[row - 1][col - 1] != -1 ? tmp_heat[row - 1][col - 1] = 1 : 0; //C
-				row > 0 && tmp_heat[row - 1][col] != -1 ? tmp_heat[row - 1][col] = 1 : 0; //B
-				row > 0 && col < board->size.col - 1 &&  tmp_heat[row - 1][col + 1] != -1 ? tmp_heat[row - 1][col + 1] = 1 : 0; //D
-				row < board->size.row - 1 && col > 0 && tmp_heat[row + 1][col - 1] != -1 ? tmp_heat[row + 1][col - 1] = 1 : 0; //H
-				row < board->size.row - 1 &&  tmp_heat[row + 1][col] != -1 ? tmp_heat[row + 1][col] = 1 : 0; //F
-				row < board->size.row - 1 && col < board->size.col - 1 && tmp_heat[row + 1][col + 1] != -1 ? tmp_heat[row + 1][col + 1] = 1 : 0; //G
-				col > 0 &&  tmp_heat[row][col - 1] != -1 ? tmp_heat[row][col - 1] = 1 : 0; //A
-				col < board->size.col - 1 &&  tmp_heat[row][col + 1] != -1 ? tmp_heat[row][col + 1] = 1 : 0; //E
+				row > 0 && col > 0 && tmp_heat[row - 1][col - 1] != -1 && tmp_heat[row - 1][col - 1] != -2 ? tmp_heat[row - 1][col - 1] = 1 : 0; //C
+				row > 0 && tmp_heat[row - 1][col] != -1 && tmp_heat[row - 1][col] != -2 ? tmp_heat[row - 1][col] = 1 : 0; //B
+				row > 0 && col < board->size.col - 1 && tmp_heat[row - 1][col + 1] != -1 && tmp_heat[row - 1][col + 1] != -2 ? tmp_heat[row - 1][col + 1] = 1 : 0; //D
+				row < board->size.row - 1 && col > 0 && tmp_heat[row + 1][col - 1] != -1 && tmp_heat[row + 1][col - 1] != -2 ? tmp_heat[row + 1][col - 1] = 1 : 0; //H
+				row < board->size.row - 1 && tmp_heat[row + 1][col] != -1 && tmp_heat[row + 1][col] != -2 ? tmp_heat[row + 1][col] = 1 : 0; //F
+				row < board->size.row - 1 && col < board->size.col - 1 && tmp_heat[row + 1][col + 1] != -1 && tmp_heat[row + 1][col + 1] != -2 ? tmp_heat[row + 1][col + 1] = 1 : 0; //G
+				col > 0 &&  tmp_heat[row][col - 1] != -1 && tmp_heat[row][col - 1] != -2  ? tmp_heat[row][col - 1] = 1 : 0; //A
+				col < board->size.col - 1 && tmp_heat[row][col + 1] != -1  && tmp_heat[row][col + 1] != -2 ? tmp_heat[row][col + 1] = 1 : 0; //E
 				tmp_heat[row][col] = -1;
 			}
 			else if (board->map[row][col] == 'X' || board->map[row][col] == 'x')
@@ -53,7 +53,7 @@ void	ft_plusplus(int **tmp_heat, t_point coord, t_point board_size, int value)
 		|| (coord.row < board_size.row - 1 && coord.col < board_size.col - 1 && tmp_heat[coord.row + 1][coord.col + 1] == value))
 		|| (coord.col > 0 &&  tmp_heat[coord.row][coord.col - 1] == value))
 		|| (coord.col < board_size.col - 1 &&  tmp_heat[coord.row][coord.col + 1] == value))
-		tmp_heat[coord.row][coord.col] =  value +1;
+		tmp_heat[coord.row][coord.col] =  value + 1;
 }
 
 void	ft_heat_over(int **heat, t_point size)

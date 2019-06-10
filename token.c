@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 20:52:43 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/10 05:09:01 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/10 06:51:28 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,21 +92,23 @@ t_point	ft_place_token(int	**heat, t_point size_h, t_token piece)
 				{
 					if (piece.map[piece_c.row][piece_c.col] == '*'
 						&& heat_c.row + i.row < size_h.row 
-					   	&& heat_c.col + i.col < size_h.col
-						&& (heat[heat_c.row + i.row][heat_c.col + i.col] == -2 || heat[heat_c.row + i.row][heat_c.col + i.col] > 0))
+					   	&& heat_c.col + i.col < size_h.col)
 					{
 							if (heat[heat_c.row + i.row][heat_c.col + i.col] == -2)
 								count++;
-							if (heat[heat_c.row + i.row][heat_c.col + i .col] > 0)
+							if (heat[heat_c.row + i.row][heat_c.col + i .col] == -1 || (count > 1))
+								sum = -1;
+							else if (heat[heat_c.row + i.row][heat_c.col + i .col] >= 0 && sum >= 0)
 								sum += heat[heat_c.row + i.row][heat_c.col + i .col];
+							
 					}
 					if (piece_c.col == piece.size.col - 1
-							&& piece_c.row == piece.size.row - 1 && count == 1 && sum > 1)
+							&& piece_c.row == piece.size.row - 1 && count == 1 &&sum >= 0)
 					{
 						place.row = heat_c.row;
 						place.col = heat_c.col;
 						if (heat_c.row + piece.size.row < size_h.row && heat_c.col + piece.size.col < size_h.col
-								&& heat[heat_c.row][heat_c.col] > 0)
+								&& heat[heat_c.row][heat_c.col] >= 0)
 							store_available_coords(&list, heat_c, sum);
 					}
 					i.col += 1;
