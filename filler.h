@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/19 04:15:31 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/09 00:14:12 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/14 03:02:00 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,7 @@ t_point	ft_place_token(int	**heat, t_point size_h, t_token piece);
 void	ft_print_matrix(int **tab, t_point size);
 void	ft_print_token(t_token token);
 void	ft_print_point(t_point point, int fd);
+
+t_point	ft_trim_piece(t_token piece);
 #endif
 

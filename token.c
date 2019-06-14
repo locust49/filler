@@ -6,12 +6,13 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 20:52:43 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/10 06:51:28 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/14 03:38:43 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 #include <stdio.h>
+
 void	print_list(t_place *list)
 {
 	t_place *tmp;
@@ -32,6 +33,21 @@ void	print_list(t_place *list)
 	ft_putchar_fd('\n', 2);	
 }
 
+void	ft_priority_list(t_place *place)
+{
+	t_place	*tmp;
+	t_place	*top;
+
+	tmp = place;
+	top = place;
+	while (tmp->next && (tmp->heat_score == 0 || tmp->heat_score == -1))
+		tmp = tmp->next;
+	if (!tmp->next && (tmp->heat_score == 0 || tmp->heat_score == -1))
+		place = top;
+	else
+		place = tmp;
+}
+
 void	store_available_coords(t_place **available, t_point coord, int sum)
 {
 	t_place *tmp;
@@ -43,9 +59,10 @@ void	store_available_coords(t_place **available, t_point coord, int sum)
 	place->possibility.row = coord.row;
 	place->possibility.col = coord.col;
 	place->heat_score = sum;
-	if (tmp->heat_score < sum)
+	// = if down to up
+	if (tmp->heat_score <= sum)
 	{
-		while (tmp && tmp->next && tmp->next->heat_score < place->heat_score)
+		while (tmp->next && tmp->next->heat_score <= place->heat_score)
 			tmp = tmp->next;
 		tmp1 = tmp->next;
 		tmp->next = place;
@@ -64,12 +81,13 @@ t_point	ft_place_token(int	**heat, t_point size_h, t_token piece)
 	t_point	heat_c;
 	t_point	piece_c;	
 	t_point i;
+	t_point lim;
 	t_place	*list;
 	int		sum;
 	int		count;
 
-	place.row = -1;
-	place.col = -1;
+	place.row = -size_h.row;
+	place.col = -size_h.col;
 	heat_c.row = -1;
 	list = (t_place*)malloc(sizeof(t_place));
 	list->possibility = place;
@@ -84,6 +102,7 @@ t_point	ft_place_token(int	**heat, t_point size_h, t_token piece)
 			piece_c.row = -1;
 			i.row = 0;
 			sum = 0;
+			lim = ft_trim_piece(piece);
 			while (++piece_c.row < piece.size.row)
 			{
 				i.col = 0;
@@ -94,21 +113,29 @@ t_point	ft_place_token(int	**heat, t_point size_h, t_token piece)
 						&& heat_c.row + i.row < size_h.row 
 					   	&& heat_c.col + i.col < size_h.col)
 					{
-							if (heat[heat_c.row + i.row][heat_c.col + i.col] == -2)
+							if (heat[heat_c.row + i.row][heat_c.col + i.col]
+									== -2)
 								count++;
-							if (heat[heat_c.row + i.row][heat_c.col + i .col] == -1 || (count > 1))
+							if (heat[heat_c.row + i.row][heat_c.col + i .col]
+								   	== -1 || (count > 1))
 								sum = -1;
-							else if (heat[heat_c.row + i.row][heat_c.col + i .col] >= 0 && sum >= 0)
-								sum += heat[heat_c.row + i.row][heat_c.col + i .col];
+							else if (heat[heat_c.row + i.row]
+									[heat_c.col + i.col] >= 0 && sum >= 0)
+								sum += heat[heat_c.row + i.row]
+										[heat_c.col + i .col];
 							
 					}
 					if (piece_c.col == piece.size.col - 1
-							&& piece_c.row == piece.size.row - 1 && count == 1 &&sum >= 0)
+							&& piece_c.row == piece.size.row - 1
+						   	&& count == 1 && sum >= 0)
 					{
 						place.row = heat_c.row;
 						place.col = heat_c.col;
-						if (heat_c.row + piece.size.row < size_h.row && heat_c.col + piece.size.col < size_h.col
-								&& heat[heat_c.row][heat_c.col] >= 0)
+						ft_print_point(place, 2);
+						// trim hna ? 
+						if (heat_c.row + lim.row - 1 < size_h.row &&
+							   	heat_c.col + lim.col - 1 < size_h.col)
+								//&& heat[heat_c.row][heat_c.col] >= 0)
 							store_available_coords(&list, heat_c, sum);
 					}
 					i.col += 1;
@@ -118,6 +145,7 @@ t_point	ft_place_token(int	**heat, t_point size_h, t_token piece)
 		}
 	}
 	print_list(list);
+	ft_priority_list(list);	
 	place = (list->next ? list->next->possibility : list->possibility);
 	free(list);
 	return (place);
