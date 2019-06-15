@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 20:52:43 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/14 03:38:43 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/15 15:27:04 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,21 @@ void	print_list(t_place *list)
 	ft_putchar_fd('\n', 2);	
 }
 
-void	ft_priority_list(t_place *place)
+void	ft_priority_list(t_place **place)
 {
 	t_place	*tmp;
 	t_place	*top;
 
-	tmp = place;
-	top = place;
+	tmp = *place;
+	top = *place;
 	while (tmp->next && (tmp->heat_score == 0 || tmp->heat_score == -1))
 		tmp = tmp->next;
 	if (!tmp->next && (tmp->heat_score == 0 || tmp->heat_score == -1))
-		place = top;
+		*place = top;
 	else
-		place = tmp;
+		*place = tmp;
+	ft_putendl_fd("after priority :", 2);
+	print_list(*place);
 }
 
 void	store_available_coords(t_place **available, t_point coord, int sum)
@@ -116,7 +118,7 @@ t_point	ft_place_token(int	**heat, t_point size_h, t_token piece)
 							if (heat[heat_c.row + i.row][heat_c.col + i.col]
 									== -2)
 								count++;
-							if (heat[heat_c.row + i.row][heat_c.col + i .col]
+							if (heat[heat_c.row + i.row][heat_c.col + i.col]
 								   	== -1 || (count > 1))
 								sum = -1;
 							else if (heat[heat_c.row + i.row]
@@ -132,9 +134,10 @@ t_point	ft_place_token(int	**heat, t_point size_h, t_token piece)
 						place.row = heat_c.row;
 						place.col = heat_c.col;
 						ft_print_point(place, 2);
-						// trim hna ? 
+						ft_putchar_fd('+', 2);
+						ft_print_point(lim, 2);
 						if (heat_c.row + lim.row - 1 < size_h.row &&
-							   	heat_c.col + lim.col - 1 < size_h.col)
+							   	heat_c.col + piece.size.col - 1 < size_h.col)
 								//&& heat[heat_c.row][heat_c.col] >= 0)
 							store_available_coords(&list, heat_c, sum);
 					}
@@ -145,8 +148,16 @@ t_point	ft_place_token(int	**heat, t_point size_h, t_token piece)
 		}
 	}
 	print_list(list);
-	ft_priority_list(list);	
-	place = (list->next ? list->next->possibility : list->possibility);
+	ft_priority_list(&list);	
+	//print_list(list);
+	if (list->heat_score == -1 && list->next)
+		place = list->next->possibility;
+	else
+		place = list->possibility;
+	ft_putendl_fd("outside priority :", 2);
+	print_list(list);
+//	if (list->next)
+//	place = list->possibility;
 	free(list);
 	return (place);
 }
