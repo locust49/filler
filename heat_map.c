@@ -6,86 +6,82 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 19:11:01 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/14 03:31:36 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/16 04:33:25 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-void	ft_heat_one(int **heat, t_token *board)
+void	ft_heat_one(t_point i, int **tmp, t_token *map)
 {
-	int**tmp_heat;
-	int	row;
-	int	col;
+	i.row > 0 && i.col > 0 && tmp[i.row - 1][i.col - 1] != -1
+		&& tmp[i.row - 1][i.col - 1] != -2 ? tmp[i.row - 1][i.col - 1] = 1 : 0;
+	i.row > 0 && tmp[i.row - 1][i.col] != -1 && tmp[i.row - 1][i.col] != -2 ?
+		tmp[i.row - 1][i.col] = 1 : 0;
+	i.row > 0 && i.col < map->size.col - 1 && tmp[i.row - 1][i.col + 1] != -1
+		&& tmp[i.row - 1][i.col + 1] != -2 ? tmp[i.row - 1][i.col + 1] = 1 : 0;
+	i.row < map->size.row - 1 && i.col > 0 && tmp[i.row + 1][i.col - 1] != -1
+		&& tmp[i.row + 1][i.col - 1] != -2 ? tmp[i.row + 1][i.col - 1] = 1 : 0;
+	i.row < map->size.row - 1 && tmp[i.row + 1][i.col] != -1
+		&& tmp[i.row + 1][i.col] != -2 ? tmp[i.row + 1][i.col] = 1 : 0;
+	i.row < map->size.row - 1 && i.col < map->size.col - 1
+		&& tmp[i.row + 1][i.col + 1] != -1 && tmp[i.row + 1][i.col + 1] != -2 ?
+		tmp[i.row + 1][i.col + 1] = 1 : 0;
+	i.col > 0 && tmp[i.row][i.col - 1] != -1 && tmp[i.row][i.col - 1] != -2 ?
+		tmp[i.row][i.col - 1] = 1 : 0;
+	i.col < map->size.col - 1 && tmp[i.row][i.col + 1] != -1
+		&& tmp[i.row][i.col + 1] != -2 ? tmp[i.row][i.col + 1] = 1 : 0;
+	tmp[i.row][i.col] = -1;
+}
 
-	tmp_heat = heat;
-	row = -1;
-	while (++row < board->size.row)
+void	ft_heat_and_replace(int **heat, t_token *map)
+{
+	int		**tmp;
+	t_point	i;
+
+	tmp = heat;
+	i.row = -1;
+	while (++i.row < map->size.row)
 	{
-		col = -1;
-		while (++col < board->size.col)
+		i.col = -1;
+		while (++i.col < map->size.col)
 		{
-			if (board->map[row][col] == 'O' || board->map[row][col] == 'o')
+			if (map->map[i.row][i.col] == 'O' || map->map[i.row][i.col] == 'o')
 			{
-				if (row > 0 && col > 0 && tmp_heat[row - 1][col - 1] != -1
-					&& tmp_heat[row - 1][col - 1] != -2)
-				   	tmp_heat[row - 1][col - 1] = 1;
-				if (row > 0 && tmp_heat[row - 1][col] != -1
-					   && tmp_heat[row - 1][col] != -2)
-					tmp_heat[row - 1][col] = 1;
-				if (row > 0 && col < board->size.col - 1
-						&& tmp_heat[row - 1][col + 1] != -1
-						&& tmp_heat[row - 1][col + 1] != -2)
-					tmp_heat[row - 1][col + 1] = 1;
-				if (row < board->size.row - 1 && col > 0
-						&& tmp_heat[row + 1][col - 1] != -1
-						&& tmp_heat[row + 1][col - 1] != -2)
-					tmp_heat[row + 1][col - 1] = 1;
-				if (row < board->size.row - 1 && tmp_heat[row + 1][col] != -1
-					   && tmp_heat[row + 1][col] != -2)
-					tmp_heat[row + 1][col] = 1;
-				if (row < board->size.row - 1 && col < board->size.col - 1
-						&& tmp_heat[row + 1][col + 1] != -1
-						&& tmp_heat[row + 1][col + 1] != -2)
-					tmp_heat[row + 1][col + 1] = 1;
-				if (col > 0 &&  tmp_heat[row][col - 1] != -1
-						&& tmp_heat[row][col - 1] != -2)
-					tmp_heat[row][col - 1] = 1;
-				if (col < board->size.col - 1 && tmp_heat[row][col + 1] != -1
-						&& tmp_heat[row][col + 1] != -2)
-					tmp_heat[row][col + 1] = 1;
-				tmp_heat[row][col] = -1;
+				ft_heat_one(i, tmp, map);
+				tmp[i.row][i.col] = -1;
 			}
-			else if (board->map[row][col] == 'X' || board->map[row][col] == 'x')
-				tmp_heat[row][col] = -2;
+			else if (map->map[i.row][i.col] == 'X'
+					|| map->map[i.row][i.col] == 'x')
+				tmp[i.row][i.col] = -2;
 		}
 	}
 }
 
-void	ft_plusplus(int **tmp_heat, t_point coord, t_point board_size, int value)
+void	ft_plusplus(int **tmp, t_point coord, t_point map_size, int value)
 {
 	if ((((((((coord.row > 0 && coord.col > 0
-					&& tmp_heat[coord.row - 1][coord.col - 1] == value)
-		|| (coord.row > 0 && tmp_heat[coord.row - 1][coord.col] == value))
-		|| (coord.row > 0 && coord.col < board_size.col - 1
-					&&  tmp_heat[coord.row - 1][coord.col + 1] == value))
-		|| (coord.row < board_size.row - 1 && coord.col > 0
-					&& tmp_heat[coord.row + 1][coord.col - 1] == value))
-		|| (coord.row < board_size.row - 1
-					&& tmp_heat[coord.row + 1][coord.col] == value))
-		|| (coord.row < board_size.row - 1 && coord.col < board_size.col - 1
-					&& tmp_heat[coord.row + 1][coord.col + 1] == value))
-		|| (coord.col > 0 &&  tmp_heat[coord.row][coord.col - 1] == value))
-		|| (coord.col < board_size.col - 1
-					&& tmp_heat[coord.row][coord.col + 1] == value))
-		tmp_heat[coord.row][coord.col] =  value + 1;
+					&& tmp[coord.row - 1][coord.col - 1] == value)
+				|| (coord.row > 0 && tmp[coord.row - 1][coord.col] == value))
+				|| (coord.row > 0 && coord.col < map_size.col - 1
+					&& tmp[coord.row - 1][coord.col + 1] == value))
+				|| (coord.row < map_size.row - 1 && coord.col > 0
+					&& tmp[coord.row + 1][coord.col - 1] == value))
+				|| (coord.row < map_size.row - 1
+					&& tmp[coord.row + 1][coord.col] == value))
+				|| (coord.row < map_size.row - 1 && coord.col < map_size.col - 1
+					&& tmp[coord.row + 1][coord.col + 1] == value))
+				|| (coord.col > 0 && tmp[coord.row][coord.col - 1] == value))
+				|| (coord.col < map_size.col - 1
+					&& tmp[coord.row][coord.col + 1] == value))
+		tmp[coord.row][coord.col] = value + 1;
 }
 
 void	ft_heat_over(int **heat, t_point size)
 {
 	t_point	coord;
-	int	mem;
-	int value;
+	int		mem;
+	int		value;
 
 	value = 0;
 	mem = size.col;

@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 19:08:15 by slyazid           #+#    #+#             */
-/*   Updated: 2019/05/23 19:23:26 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/16 00:58:41 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,18 @@
 
 void	ft_initialize_params(t_token *board, t_token *piece)
 {
-	board->size.row = -1;
-	board->size.col = -1;
-	board->id = 'b';
-	piece->size.row = -1;
-	piece->size.col = -1;
-	piece->id = 'p';
+	if (board)
+	{
+		board->size.row = -1;
+		board->size.col = -1;
+		board->id = 'b';
+	}
+	if (piece)
+	{
+		piece->size.row = -1;
+		piece->size.col = -1;
+		piece->id = 'p';
+	}
 }
 
 void	set_players(t_players *ps, char *line)

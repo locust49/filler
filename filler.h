@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/19 04:15:31 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/14 03:02:00 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/16 05:04:24 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	set_players(t_players *p, char *line);
 void	get_token(t_token *token, char *line, int newline);
 int		**ft_allocate_tab(t_point size);
 
-void	ft_heat_one(int **heat, t_token *board);
+void	ft_heat_and_replace(int **heat, t_token *board);
 void	ft_heat_over(int **heat, t_point size);
 
 t_point	ft_place_token(int	**heat, t_point size_h, t_token piece);
@@ -58,6 +58,6 @@ void	ft_print_matrix(int **tab, t_point size);
 void	ft_print_token(t_token token);
 void	ft_print_point(t_point point, int fd);
 
-t_point	ft_trim_piece(t_token piece);
+int		ft_trim_piece(t_token piece);
 #endif
 
