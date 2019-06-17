@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 23:53:01 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/16 04:34:23 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/17 01:19:53 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,16 @@
 ** depends on rows too :v
 */
 
-int	ft_trim_piece(t_token piece)
+int	ft_check_iter_piece(t_token piece, t_point p,
+		t_point h, t_point i)
+{
+	if (piece.map[p.row][p.col] == '*' && h.row + i.row < piece.msize.row
+		&& h.col + i.col < piece.msize.col)
+		return (1);
+	return (0);
+}
+
+int	trim_piece(t_token piece)
 {
 	t_point	coord;
 	t_point	jumper;

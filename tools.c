@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 19:13:23 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/16 04:36:20 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/17 01:18:26 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,43 @@ void	ft_print_point(t_point point, int fd)
 	ft_putstr_fd("\n ", fd);
 }
 
-void	print_list(t_place *list)
-{
-	t_place *tmp;
+/*
+** void	print_list(t_place *list)
+**{
+**	t_place *tmp;
+**
+**	tmp = list;
+**	while (tmp)
+**	{
+**		ft_putchar_fd('(', 2);
+**		ft_putnbr_fd(tmp->possibility.row, 2);
+**		ft_putchar_fd(',', 2);
+**		ft_putnbr_fd(tmp->possibility.col, 2);
+**		ft_putchar_fd(')', 2);
+**		ft_putstr_fd(" - ", 2);
+**		ft_putnbr_fd(tmp->heat_score, 2);
+**		ft_putstr_fd(" -> ", 2);
+**		tmp = tmp->next;
+**	}
+**	ft_putchar_fd('\n', 2);
+**}
+*/
 
-	tmp = list;
-	while (tmp)
-	{
-		ft_putchar_fd('(', 2);
-		ft_putnbr_fd(tmp->possibility.row, 2);
-		ft_putchar_fd(',', 2);
-		ft_putnbr_fd(tmp->possibility.col, 2);
-		ft_putchar_fd(')', 2);
-		ft_putstr_fd(" - ", 2);
-		ft_putnbr_fd(tmp->heat_score, 2);
-		ft_putstr_fd(" -> ", 2);
-		tmp = tmp->next;
-	}
-	ft_putchar_fd('\n', 2);
+void	ft_initialize_list(t_place **list, t_point *place, t_point size_h)
+{
+	place->row = -size_h.row;
+	place->col = -size_h.col;
+	*list = (t_place*)malloc(sizeof(t_place));
+	(*list)->possibility = *place;
+	(*list)->heat_score = -1;
+	(*list)->next = NULL;
+}
+
+t_point	ft_sum_point(t_point p1, t_point p2)
+{
+	t_point sum;
+
+	sum.row = p1.row + p2.row;
+	sum.col = p1.col + p2.col;
+	return (sum);
 }
