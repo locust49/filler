@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/19 04:15:31 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/17 02:33:11 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/17 03:13:06 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ typedef struct	s_players
 {
 	int		p1;
 	int		p2;
-	char	*p1_name;
-	char	*p2_name;
 	char	p1_sym;
 	char	p2_sym;
 }				t_players;

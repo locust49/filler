@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/19 04:05:40 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/17 02:34:36 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/17 02:53:13 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,8 @@ int		**fill_it(t_token board, char *line, t_players ps)
 	ft_heat_and_replace(heat, &board, ps);
 	ft_heat_over(heat, board.size);
 	coord = ft_place_token(heat, board.size, piece);
-	ft_print_matrix(heat, board.size);
 	ft_print_point(coord, 1);
-	free(piece.map);
+	piece.map ? free(piece.map) : 0;
 	return (heat);
 }
 
@@ -66,10 +65,9 @@ int		main(void)
 		!ft_strstr(line, "$$$ exec ") ? 0 : set_players(&ps, line);
 		!ft_strstr(line, "Plateau ") ? 0 : get_token(&token, line, 4);
 		heat = ft_strstr(line, "Piece ") ? fill_it(token, line, ps) : 0;
-		free(line);
+		line ? free(line) : 0;
 	}
 	free(token.map);
-	line ? free(line) : 0;
 	heat ? free(heat) : 0;
 	return (1);
 }
