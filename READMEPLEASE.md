@@ -11,10 +11,10 @@ Make it .. and play it =)
 
 # guide 
 - algorithm : heatmap
-  *) heat map the opponent
-  *) store possible coordonates in order
-  *) choose the best place (or second one ^-^ figure out why)
-  *) print the coordinate
-  *) nothing more, the vm does everything
-  *) .. 
+  - heat map the opponent
+  - store possible coordonates in order
+  - choose the best place (or second one ^-^ figure out why)
+  - print the coordinate
+  - nothing more, the vm does everything
+  - .. 
   
