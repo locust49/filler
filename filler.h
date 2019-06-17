@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/19 04:15:31 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/17 01:23:35 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/17 02:33:11 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int				**ft_allocate_tab(t_point size);
 **				./heat_map.c:
 */
 
-void			ft_heat_and_replace(int **heat, t_token *board);
+void			ft_heat_and_replace(int **heat, t_token *board, t_players ps);
 void			ft_heat_over(int **heat, t_point size);
 
 /*
@@ -75,6 +75,8 @@ void			ft_print_matrix(int **tab, t_point size);
 void			ft_print_token(t_token token);
 void			ft_print_point(t_point point, int fd);
 t_point			ft_sum_point(t_point p1, t_point p2);
+void			ft_initialize_list(t_place **list,
+				t_point *place, t_point size_h);
 
 /*
 **				./piece.c:

@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 19:08:15 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/16 00:58:41 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/17 02:19:59 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	set_players(t_players *ps, char *line)
 {
 	ps->p1 = line[10] - 48;
 	ps->p1_sym = (ps->p1 == 1) ? 'o' : 'x';
+	ps->p2 = (ps->p1 == 1) ? 2 : 1;
+	ps->p2_sym = (ps->p2 == 1) ? 'o' : 'x';
 }
 
 void	get_token_size(t_token *token, char *line)

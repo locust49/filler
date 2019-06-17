@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 19:11:01 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/16 04:33:25 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/17 02:30:46 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_heat_one(t_point i, int **tmp, t_token *map)
 	tmp[i.row][i.col] = -1;
 }
 
-void	ft_heat_and_replace(int **heat, t_token *map)
+void	ft_heat_and_replace(int **heat, t_token *map, t_players ps)
 {
 	int		**tmp;
 	t_point	i;
@@ -46,13 +46,14 @@ void	ft_heat_and_replace(int **heat, t_token *map)
 		i.col = -1;
 		while (++i.col < map->size.col)
 		{
-			if (map->map[i.row][i.col] == 'O' || map->map[i.row][i.col] == 'o')
+			if (map->map[i.row][i.col] == ps.p2_sym - 32
+				|| map->map[i.row][i.col] == ps.p2_sym)
 			{
 				ft_heat_one(i, tmp, map);
 				tmp[i.row][i.col] = -1;
 			}
-			else if (map->map[i.row][i.col] == 'X'
-					|| map->map[i.row][i.col] == 'x')
+			else if (map->map[i.row][i.col] == ps.p1_sym - 32
+					|| map->map[i.row][i.col] == ps.p1_sym)
 				tmp[i.row][i.col] = -2;
 		}
 	}
@@ -61,19 +62,19 @@ void	ft_heat_and_replace(int **heat, t_token *map)
 void	ft_plusplus(int **tmp, t_point coord, t_point map_size, int value)
 {
 	if ((((((((coord.row > 0 && coord.col > 0
-					&& tmp[coord.row - 1][coord.col - 1] == value)
-				|| (coord.row > 0 && tmp[coord.row - 1][coord.col] == value))
-				|| (coord.row > 0 && coord.col < map_size.col - 1
-					&& tmp[coord.row - 1][coord.col + 1] == value))
-				|| (coord.row < map_size.row - 1 && coord.col > 0
-					&& tmp[coord.row + 1][coord.col - 1] == value))
-				|| (coord.row < map_size.row - 1
-					&& tmp[coord.row + 1][coord.col] == value))
-				|| (coord.row < map_size.row - 1 && coord.col < map_size.col - 1
-					&& tmp[coord.row + 1][coord.col + 1] == value))
-				|| (coord.col > 0 && tmp[coord.row][coord.col - 1] == value))
-				|| (coord.col < map_size.col - 1
-					&& tmp[coord.row][coord.col + 1] == value))
+				&& tmp[coord.row - 1][coord.col - 1] == value)
+			|| (coord.row > 0 && tmp[coord.row - 1][coord.col] == value))
+			|| (coord.row > 0 && coord.col < map_size.col - 1
+				&& tmp[coord.row - 1][coord.col + 1] == value))
+			|| (coord.row < map_size.row - 1 && coord.col > 0
+				&& tmp[coord.row + 1][coord.col - 1] == value))
+			|| (coord.row < map_size.row - 1
+				&& tmp[coord.row + 1][coord.col] == value))
+			|| (coord.row < map_size.row - 1 && coord.col < map_size.col - 1
+				&& tmp[coord.row + 1][coord.col + 1] == value))
+			|| (coord.col > 0 && tmp[coord.row][coord.col - 1] == value))
+			|| (coord.col < map_size.col - 1
+				&& tmp[coord.row][coord.col + 1] == value))
 		tmp[coord.row][coord.col] = value + 1;
 }
 

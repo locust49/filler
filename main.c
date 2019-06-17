@@ -6,7 +6,7 @@
 /*   By: slyazid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/19 04:05:40 by slyazid           #+#    #+#             */
-/*   Updated: 2019/06/16 04:24:00 by slyazid          ###   ########.fr       */
+/*   Updated: 2019/06/17 02:34:36 by slyazid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		ft_check_free(int **heat, t_point coord, t_point board_size)
 	return (0);
 }
 
-int		**fill_it(t_token board, char *line)
+int		**fill_it(t_token board, char *line, t_players ps)
 {
 	t_token	piece;
 	int		**heat;
@@ -41,7 +41,7 @@ int		**fill_it(t_token board, char *line)
 	ft_initialize_params(NULL, &piece);
 	get_token(&piece, line, 0);
 	heat = ft_allocate_tab(board.size);
-	ft_heat_and_replace(heat, &board);
+	ft_heat_and_replace(heat, &board, ps);
 	ft_heat_over(heat, board.size);
 	coord = ft_place_token(heat, board.size, piece);
 	ft_print_matrix(heat, board.size);
@@ -54,21 +54,22 @@ int		main(void)
 {
 	char		*line;
 	t_players	ps;
-	t_token		board;
+	t_token		token;
 	int			**heat;
 	t_point		coord;
 
-	ft_initialize_params(&board, NULL);
+	ft_initialize_params(&token, NULL);
 	coord.row = -1;
 	coord.col = -1;
 	while (get_next_line(0, &line))
 	{
 		!ft_strstr(line, "$$$ exec ") ? 0 : set_players(&ps, line);
-		!ft_strstr(line, "Plateau ") ? 0 : get_token(&board, line, 4);
-		heat = ft_strstr(line, "Piece ") ? fill_it(board, line) : 0;
+		!ft_strstr(line, "Plateau ") ? 0 : get_token(&token, line, 4);
+		heat = ft_strstr(line, "Piece ") ? fill_it(token, line, ps) : 0;
 		free(line);
 	}
-	free(board.map);
+	free(token.map);
+	line ? free(line) : 0;
 	heat ? free(heat) : 0;
 	return (1);
 }
